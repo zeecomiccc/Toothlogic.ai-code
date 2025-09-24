@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Universal Numbering System Dental Chart</title>
+    <style>
+      .dental-chart .tooth-number-container {
+        position: relative;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        margin: 5px;
+      }
+
+      .dental-chart .tooth-number-container input[type="checkbox"] {
+        display: none;
+      }
+
+      .dental-chart .tooth-svg {
+        width: 100%;
+        height: 100%;
+        transition: all 0.3s ease;
+        fill: #f0f0f0;
+        stroke: #333;
+        stroke-width: 1;
+      }
+
+      .dental-chart .tooth-number {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 12px;
+        font-weight: bold;
+        pointer-events: none;
+      }
+
+      .dental-chart .tooth-svg {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: white;
+        border: 2px solid #989898;
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      /* Add cross lines */
+      .dental-chart .tooth-svg::before,
+      .dental-chart .tooth-svg::after {
+        content: "";
+        position: absolute;
+        background: #989898;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .dental-chart .tooth-svg::before {
+        width: 2px;
+        height: 100%;
+      }
+
+      .dental-chart .tooth-svg::after {
+        width: 100%;
+        height: 2px;
+      }
+
+      /* Inner circle */
+      .dental-chart .tooth-svg-inner {
+        position: absolute;
+        width: 60%;
+        height: 60%;
+        border-radius: 50%;
+        background: white;
+        border: 1px solid #989898;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 1px;
+      }
+      .dental-chart {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+      }
+      .adult-upper-stack,
+      .adult-bottom-stack {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .upper-layer-box,
+      .bottom-layer-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        position: relative;
+      }
+      .adult-upper-tooth,
+      .adult-bottom-tooth {
+        max-width: 350px;
+        width: 100%;
+      }
+      .adult-upper-tooth > :nth-child(1) {
+        width: max-content;
+        margin: auto;
+      }
+      .adult-upper-tooth > :nth-child(2) {
+        width: 44%;
+        margin: -30px auto 0;
+      }
+      .adult-upper-tooth > :nth-child(3) {
+        width: 64%;
+        margin: -14px auto 0;
+      }
+      .adult-upper-tooth > :nth-child(4) {
+        width: 80%;
+        margin: -12px auto 0;
+      }
+      .adult-upper-tooth > :nth-child(5) {
+        width: 90%;
+        margin: -5px auto 0;
+      }
+      .adult-upper-tooth > :nth-child(6) {
+        width: 97%;
+        margin: -5px auto 0;
+      }
+      .adult-upper-tooth > :nth-child(7) {
+        width: 100%;
+        margin: -5px auto 0;
+      }
+
+      .adult-bottom-tooth > :nth-child(8) {
+        width: max-content;
+        margin: -30px auto 0;
+      }
+      .adult-bottom-tooth > :nth-child(7) {
+        width: 44%;
+        margin: -20px auto 0;
+      }
+      .adult-bottom-tooth > :nth-child(6) {
+        width: 64%;
+        margin: -12px auto 0;
+      }
+      .adult-bottom-tooth > :nth-child(5) {
+        width: 80%;
+        margin: -5px auto 0;
+      }
+      .adult-bottom-tooth > :nth-child(4) {
+        width: 90%;
+        margin: -2px auto 0;
+      }
+      .adult-bottom-tooth > :nth-child(3) {
+        width: 95%;
+        margin: -2px auto 0;
+      }
+      .adult-bottom-tooth > :nth-child(2) {
+        width: 98%;
+        margin: -02px auto 0;
+      }
+      .adult-bottom-tooth > :nth-child(1) {
+        width: 100%;
+        margin: -2px auto 0;
+      }
+
+      .child-upper-tooth {
+        max-width: 250px;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+      }
+      .child-upper-stack,
+      .child-bottom-stack {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .child-upper-tooth > :nth-child(1) {
+        width: max-content;
+        margin: 0 auto -0px;
+      }
+      .child-upper-tooth > :nth-child(2) {
+        width: 62%;
+        margin: -28px auto 0;
+      }
+      .child-upper-tooth > :nth-child(3) {
+        width: 85%;
+        margin: -15px auto 0;
+      }
+      .child-upper-tooth > :nth-child(4) {
+        width: 98%;
+        margin: -5px auto 0;
+      }
+      .child-upper-tooth > :nth-child(5) {
+        width: 100%;
+        margin: -5px auto 0;
+      }
+      .child-bottom-tooth {
+        max-width: 250px;
+        width: 100%;
+        position: absolute;
+        top: 0;
+      }
+      .child-bottom-tooth > :nth-child(1) {
+        width: 100%;
+        margin: auto;
+      }
+      .child-bottom-tooth > :nth-child(2) {
+        width: 98%;
+        margin: -2px auto 0;
+      }
+      .child-bottom-tooth > :nth-child(3) {
+        width: 85%;
+        margin: -4px auto 0;
+      }
+      .child-bottom-tooth > :nth-child(4) {
+        width: 62%;
+        margin: -10px auto 0;
+      }
+      .child-bottom-tooth > :nth-child(5) {
+        width: max-content;
+        margin: -30px auto -0px;
+      }
+
+      @media (max-width: 400px) {
+        .dental-chart {
+          gap: 0px;
+          align-items: center;
+        }
+        .upper-layer-box,
+        .bottom-layer-box {
+          transform: scale(0.8);
+          max-width: unset;
+          width: 350px;
+        }
+      }
+
+      /* Enhanced button styles */
+      .controls {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 20px 0;
+        justify-content: center;
+        padding: 15px;
+        background: #f5f5f5;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+
+      .btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      }
+
+      .btn.active {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 2px white, 0 0 0 4px #333;
+      }
+
+      .btn-red { background-color: #ff4444; }
+      .btn-blue { background-color: #4285f4; }
+      .btn-yellow { background-color: #ffbb33; }
+      .btn-green { background-color: #00c851; }
+      .btn-secondary { background-color: #6c757d; }
+
+      /* Category list styles */
+      .category-section {
+        margin: 30px 0;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .category-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-top: 15px;
+      }
+
+      .category-item {
+        flex: 1;
+        min-width: 200px;
+        background: white;
+        padding: 15px;
+        border-radius: 6px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      }
+
+      .category-title {
+        font-weight: 600;
+        margin-bottom: 10px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #eee;
+        color: #333;
+      }
+
+      .tooth-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+      }
+
+      .tooth-badge {
+        background: #e9ecef;
+        border-radius: 4px;
+        padding: 2px 8px;
+        font-size: 12px;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="controls">
+      <button class="btn btn-red active" id="btn-cavity">
+        <span>Mark Cavity</span>
+      </button>
+      <button class="btn btn-blue" id="btn-crown">
+        <span>Mark Crown/Restored</span>
+      </button>
+      <button class="btn btn-yellow" id="btn-missing">
+        <span>Mark Missing</span>
+      </button>
+      <button class="btn btn-green" id="btn-retained">
+        <span>Mark Retained</span>
+      </button>
+      <button class="btn btn-secondary" id="btn-clear">
+        <span>Clear All</span>
+      </button>
+    </div>
+
+    <div class="category-section">
+      <h3>Selected Teeth by Category</h3>
+      <div class="category-list">
+        <div class="category-item">
+          <div class="category-title">Cavity</div>
+          <div class="tooth-list" id="cavity-list"></div>
+        </div>
+        <div class="category-item">
+          <div class="category-title">Crown/Restored</div>
+          <div class="tooth-list" id="crown-list"></div>
+        </div>
+        <div class="category-item">
+          <div class="category-title">Missing</div>
+          <div class="tooth-list" id="missing-list"></div>
+        </div>
+        <div class="category-item">
+          <div class="category-title">Retained</div>
+          <div class="tooth-list" id="retained-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dental-chart" id="dentalChart">
+      <div class="upper-layer-box">
+        <div class="adult-upper-tooth">
+          <div class="adult-upper-stack">
+            <div class="adult-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-upper-tooth-8" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">8</div>
+              </div>
+            </div>
+            <div class="adult-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-upper-tooth-9" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">9</div>
+              </div>
+            </div>
+          </div>
+          <div class="adult-upper-stack">
+            <div class="adult-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-upper-tooth-7" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">7</div>
+              </div>
+            </div>
+            <div class="adult-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-upper-tooth-10" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">10</div>
+              </div>
+            </div>
+          </div>
+          <div class="adult-upper-stack">
+            <div class="adult-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-upper-tooth-6" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">6</div>
+              </div>
+            </div>
+            <div class="adult-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-upper-tooth-11" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">11</div>
+              </div>
+            </div>
+          </div>
+          <div class="adult-upper-stack">
+            <div class="adult-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-upper-tooth-5" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">5</div>
+              </div>
+            </div>
+            <div class="adult-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-upper-tooth-12" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">12</div>
+              </div>
+            </div>
+          </div>
+          <div class="adult-upper-stack">
+            <div class="adult-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-upper-tooth-4" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">4</div>
+              </div>
+            </div>
+            <div class="adult-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-upper-tooth-13" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">13</div>
+              </div>
+            </div>
+          </div>
+          <div class="adult-upper-stack">
+            <div class="adult-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-upper-tooth-2" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">3</div>
+              </div>
+            </div>
+            <div class="adult-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-upper-tooth-14" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">14</div>
+              </div>
+            </div>
+          </div>
+          <div class="adult-upper-stack">
+            <div class="adult-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-upper-tooth-2" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">2</div>
+              </div>
+            </div>
+            <div class="adult-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-upper-tooth-15" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">15</div>
+              </div>
+            </div>
+          </div>
+          <div class="adult-upper-stack">
+            <div class="adult-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-upper-tooth-1" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">1</div>
+              </div>
+            </div>
+            <div class="adult-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-upper-tooth-16" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">16</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="child-upper-tooth">
+          <div class="child-upper-stack">
+            <div class="child-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="child-upper-tooth-e" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">E</div>
+              </div>
+            </div>
+            <div class="child-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="child-upper-tooth-f" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">F</div>
+              </div>
+            </div>
+          </div>
+          <div class="child-upper-stack">
+            <div class="child-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="child-upper-tooth-d" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">D</div>
+              </div>
+            </div>
+            <div class="child-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="child-upper-tooth-g" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">G</div>
+              </div>
+            </div>
+          </div>
+          <div class="child-upper-stack">
+            <div class="child-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="child-upper-tooth-c" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">C</div>
+              </div>
+            </div>
+            <div class="child-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="child-upper-tooth-h" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">H</div>
+              </div>
+            </div>
+          </div>
+          <div class="child-upper-stack">
+            <div class="child-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="child-upper-tooth-b" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">B</div>
+              </div>
+            </div>
+            <div class="child-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="child-upper-tooth-i" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">I</div>
+              </div>
+            </div>
+          </div>
+          <div class="child-upper-stack">
+            <div class="child-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="child-upper-tooth-a" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">A</div>
+              </div>
+            </div>
+            <div class="child-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="child-upper-tooth-j" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">J</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-layer-box">
+        <div class="child-bottom-tooth">
+          <div class="child-bottom-stack">
+            <div class="child-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="child-bottom-tooth-t" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">T</div>
+              </div>
+            </div>
+            <div class="child-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="child-bottom-tooth-k" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">K</div>
+              </div>
+            </div>
+          </div>
+          <div class="child-bottom-stack">
+            <div class="child-upper-tooth-number tooth-number-container">
+              <input type="checkbox" id="child-bottom-tooth-s" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">S</div>
+              </div>
+            </div>
+            <div class="child-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="child-bottom-tooth-l" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">L</div>
+              </div>
+            </div>
+          </div>
+          <div class="child-bottom-stack">
+            <div class="child-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="child-bottom-tooth-r" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">R</div>
+              </div>
+            </div>
+            <div class="child-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="child-bottom-tooth-m" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">M</div>
+              </div>
+            </div>
+          </div>
+          <div class="child-bottom-stack">
+            <div class="child-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="child-bottom-tooth-q" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">Q</div>
+              </div>
+            </div>
+            <div class="child-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="child-bottom-tooth-n" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">N</div>
+              </div>
+            </div>
+          </div>
+          <div class="child-bottom-stack">
+            <div class="child-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="child-bottom-tooth-p" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">P</div>
+              </div>
+            </div>
+            <div class="child-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="child-bottom-tooth-o" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">O</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="adult-bottom-tooth">
+          <div class="adult-bottom-stack">
+            <div class="adult-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-bottom-tooth-32" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">32</div>
+              </div>
+            </div>
+            <div class="adult-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-bottom-tooth-17" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">17</div>
+              </div>
+            </div>
+          </div>
+          <div class="adult-bottom-stack">
+            <div class="adult-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-bottom-tooth-31" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">31</div>
+              </div>
+            </div>
+            <div class="adult-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-bottom-tooth-18" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">18</div>
+              </div>
+            </div>
+          </div>
+          <div class="adult-bottom-stack">
+            <div class="adult-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-bottom-tooth-30" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">30</div>
+              </div>
+            </div>
+            <div class="adult-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-bottom-tooth-19" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">19</div>
+              </div>
+            </div>
+          </div>
+          <div class="adult-bottom-stack">
+            <div class="adult-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-bottom-tooth-29" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">29</div>
+              </div>
+            </div>
+            <div class="adult-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-bottom-tooth-20" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">20</div>
+              </div>
+            </div>
+          </div>
+          <div class="adult-bottom-stack">
+            <div class="adult-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-bottom-tooth-28" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">28</div>
+              </div>
+            </div>
+            <div class="adult-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-bottom-tooth-21" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">21</div>
+              </div>
+            </div>
+          </div>
+          <div class="adult-bottom-stack">
+            <div class="adult-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-bottom-tooth-27" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">27</div>
+              </div>
+            </div>
+            <div class="adult-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-bottom-tooth-22" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">22</div>
+              </div>
+            </div>
+          </div>
+          <div class="adult-bottom-stack">
+            <div class="adult-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-bottom-tooth-26" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">26</div>
+              </div>
+            </div>
+            <div class="adult-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-bottom-tooth-23" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">23</div>
+              </div>
+            </div>
+          </div>
+          <div class="adult-bottom-stack">
+            <div class="adult-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-bottom-tooth-25" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">25</div>
+              </div>
+            </div>
+            <div class="adult-bottom-tooth-number tooth-number-container">
+              <input type="checkbox" id="adult-bottom-tooth-24" />
+              <div class="tooth-svg">
+                <div class="tooth-svg-inner">24</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.btn:not(#btn-clear)');
+        const clearBtn = document.getElementById('btn-clear');
+        const toothContainers = document.querySelectorAll('.tooth-number-container');
+        const selectedTeeth = {
+          cavity: new Set(),
+          crown: new Set(),
+          missing: new Set(),
+          retained: new Set()
+        };
+        
+        let currentAction = 'cavity';
+
+        // Set active button
+        buttons.forEach(btn => {
+          btn.addEventListener('click', function() {
+            buttons.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentAction = this.id.replace('btn-', '');
+          });
+        });
+
+        // Handle tooth selection
+        toothContainers.forEach(container => {
+          const checkbox = container.querySelector('input[type="checkbox"]');
+          const svg = container.querySelector('.tooth-svg');
+          const toothId = checkbox.id.split('-').pop();
+
+          container.addEventListener('click', function(e) {
+            e.preventDefault();
+            const isChecked = checkbox.checked;
+            
+            // Remove from all categories first
+            Object.keys(selectedTeeth).forEach(category => {
+              selectedTeeth[category].delete(toothId);
+            });
+            
+            // Add to current category if not unchecking
+            if (!isChecked) {
+              selectedTeeth[currentAction].add(toothId);
+            }
+            
+            // Update UI
+            updateToothAppearance(svg, currentAction, !isChecked);
+            updateCategoryLists();
+            checkbox.checked = !isChecked;
+          });
+        });
+
+        // Clear all selections
+        clearBtn.addEventListener('click', function() {
+          toothContainers.forEach(container => {
+            const checkbox = container.querySelector('input[type="checkbox"]');
+            const svg = container.querySelector('.tooth-svg');
+            
+            checkbox.checked = false;
+            svg.style.backgroundColor = '';
+            svg.style.borderColor = '';
+            
+            // Clear all categories
+            Object.keys(selectedTeeth).forEach(category => {
+              selectedTeeth[category].clear();
+            });
+          });
+          
+          updateCategoryLists();
+        });
+
+        function updateToothAppearance(svg, action, isActive) {
+          if (!isActive) {
+            svg.style.backgroundColor = '';
+            svg.style.borderColor = '';
+            return;
+          }
+
+          switch(action) {
+            case 'cavity':
+              svg.style.backgroundColor = 'rgba(255, 68, 68, 0.3)';
+              svg.style.borderColor = '#ff4444';
+              break;
+            case 'crown':
+              svg.style.backgroundColor = 'rgba(66, 133, 244, 0.3)';
+              svg.style.borderColor = '#4285f4';
+              break;
+            case 'missing':
+              svg.style.backgroundColor = 'rgba(255, 187, 51, 0.3)';
+              svg.style.borderColor = '#ffbb33';
+              break;
+            case 'retained':
+              svg.style.backgroundColor = 'rgba(0, 200, 81, 0.3)';
+              svg.style.borderColor = '#00c851';
+              break;
+          }
+        }
+
+        function updateCategoryLists() {
+          // Clear all lists
+          Object.keys(selectedTeeth).forEach(category => {
+            const list = document.getElementById(`${category}-list`);
+            list.innerHTML = '';
+            
+            // Add teeth to respective lists
+            selectedTeeth[category].forEach(toothId => {
+              const badge = document.createElement('span');
+              badge.className = 'tooth-badge';
+              badge.textContent = toothId.toUpperCase();
+              list.appendChild(badge);
+            });
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

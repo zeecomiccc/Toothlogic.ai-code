@@ -1,0 +1,11 @@
+{
+    "name": "Lab",
+    "alias": "lab",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Lab\\Providers\\LabServiceProvider"
+    ],
+    "files": []
+}
