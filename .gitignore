@@ -1,0 +1,70 @@
+# --------------------------
+# OS / Editor junk
+# --------------------------
+.DS_Store
+Thumbs.db
+/.idea/
+/.vscode/
+*.cache
+
+# --------------------------
+# Environment / Secrets
+# --------------------------
+.env
+.env.*
+!.env.example
+.phpunit.result.cache
+
+# --------------------------
+# Dependencies
+# --------------------------
+/node_modules/
+/vendor/
+
+# --------------------------
+# Laravel runtime & caches
+# --------------------------
+/bootstrap/cache/*
+!/bootstrap/cache/.gitignore
+
+/storage/*
+!/storage/.gitignore
+!/storage/**/.gitignore
+/storage/*.key
+/storage/debugbar/*
+
+# Public symlink created by `php artisan storage:link`
+/public/storage
+
+# Vite / Mix dev file
+/public/hot
+
+# Vite / Mix build artifacts
+/public/build
+/public/mix-manifest.json
+
+# --------------------------
+# Common frontend build dirs
+# --------------------------
+/dist/
+/build/
+/. next/
+
+# --------------------------
+# Logs
+# --------------------------
+*.log
+yarn-error.log*
+npm-debug.log*
+pnpm-debug.log*
+
+# --------------------------
+# Homestead (if present)
+# --------------------------
+Homestead.json
+Homestead.yaml
+
+# --------------------------
+# Optional: Media library
+# (uncomment to ignore uploaded media if you use Spatie)
+/# storage/media-library/*

@@ -717,8 +717,11 @@
             document.getElementById('save_button').addEventListener('click', function() {
                 const encounterId = {{ $data->id }};
                 const userId = {{ $data->user_id }};
-                const template_id = document.getElementById('template_id').value;
-                const other_details = document.getElementById('other_details').value;
+                const templateInput = document.getElementById('template_id');
+                const otherDetailsInput = document.getElementById('other_details');
+
+                const template_id = templateInput ? templateInput.value : ({{ $data->encounter_template_id ?? 'null' }});
+                const other_details = otherDetailsInput ? otherDetailsInput.value : '';
 
                 const data = {
                     encounter_id: encounterId,
