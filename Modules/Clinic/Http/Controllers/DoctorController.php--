@@ -1102,32 +1102,10 @@ class DoctorController extends Controller
                 $query->where('status', $filter['column_status']);
             }
         }
-        $user = auth()->user();
-        if ($user->hasRole(['admin','demo_admin'])) {
-            // no additional restrictions
-        } elseif ($user->hasRole('doctor')) {
-            $query->where('doctor_id', $user->id);
-        } elseif ($user->hasRole('vendor')) {
-            // Scope to doctors assigned to clinics owned by this vendor
-            $clinicIds = Clinics::where('vendor_id', $user->id)->pluck('id');
-            if ($clinicIds->isNotEmpty()) {
-                $doctorIds = DoctorClinicMapping::whereIn('clinic_id', $clinicIds)->pluck('doctor_id');
-                $query->whereIn('doctor_id', $doctorIds);
-            } else {
-                $query->whereRaw('1=0');
-            }
-        } elseif ($user->hasRole('receptionist')) {
-            // Scope to doctors assigned to the receptionist's clinic(s)
-            $clinicIds = Receptionist::where('receptionist_id', $user->id)->pluck('clinic_id');
-            if ($clinicIds->isNotEmpty()) {
-                $doctorIds = DoctorClinicMapping::whereIn('clinic_id', $clinicIds)->pluck('doctor_id');
-                $query->whereIn('doctor_id', $doctorIds);
-            } else {
-                $query->whereRaw('1=0');
-            }
+        if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('demo_admin')) {
+            $query;
         } else {
-            // Fallback: restrict access
-            $query->whereRaw('1=0');
+            $query->where('doctor_id', auth()->id());
         }
 
         if ($request->doctor_id !== null) {
