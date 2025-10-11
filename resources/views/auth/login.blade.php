@@ -77,7 +77,7 @@
             </div>
 
         </form>
-        @if(setting('is_dummy_credentials'))    
+        {{-- @if(setting('is_dummy_credentials'))    
         <div>
             <h6 class="text-center border-top py-3 mt-3">Demo Accounts</h6>
             <div class="parent">
@@ -92,7 +92,7 @@
                 </select>
             </div>
         </div>
-        @endif
+        @endif --}}
 
         <x-slot name="extra">
             @if (Route::has('register'))

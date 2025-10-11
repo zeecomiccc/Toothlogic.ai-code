@@ -39,7 +39,6 @@
                                 <div class="input-group custom-input-group mb-3" style="flex-direction: column; align-items: flex-start;">
                                     <div style="width: 100%; display: flex;">
                                         <input type="email" name="email" class="form-control" placeholder="Enter Email"
-                                            value="{{ setting('is_dummy_credentials') ? 'john@gmail.com' : '' }}"
                                             required autofocus>
                                         <span class="input-group-text"><i class="ph ph-envelope-simple"></i></span>
                                     </div>
@@ -50,7 +49,7 @@
 
                                 <div class="input-group custom-input-group mb-3">
                                     <input type="password" name="password" class="form-control" id="password"
-                                        placeholder="Enter Password" value="{{ setting('is_dummy_credentials') ? '12345678' : '' }}" required>
+                                        placeholder="Enter Password" required>
                                     <span class="input-group-text"><i class="ph ph-eye-slash"
                                             id="togglePassword"></i></span>
                                 </div>
